@@ -1,0 +1,8 @@
+.question-card {
+	display: inline-block;
+	margin: 50px 50px;
+	padding: 50px;
+	width: 300px;
+	background: tan;
+	border: 1px solid black;
+}
