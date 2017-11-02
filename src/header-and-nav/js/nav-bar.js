@@ -1,8 +1,18 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {setCurrentUser, setAuthToken} from '../../actions/auth';
+import {clearAuthToken} from '../../local-storage';
 import '../css/nav-bar.css';
 
 export function NavBar(props) {
+
+    function logOut() {
+        this.props.dispatch(setCurrentUser(null));
+        this.props.dispatch(setAuthToken(null));
+        clearAuthToken();
+    }
+    
     let logOutButton;
     let logInButton;
     let signUpCraftsmanButton;
@@ -43,5 +53,8 @@ export function NavBar(props) {
     );
 }
 
+const mapStateToProps = state => ({
+    loggedIn: state.auth.currentUser !== null
+});
 
-export default NavBar;
+export default connect(mapStateToProps)(NavBar);

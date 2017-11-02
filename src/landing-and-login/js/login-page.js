@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 import LoginForm from './login-form';
@@ -19,4 +20,8 @@ export class LoginPage extends React.Component {
     }
 }
 
-export default LoginPage;
+const mapStateToProps = state => ({
+    loggedIn: state.auth.currentUser !== null
+});
+
+export default connect(mapStateToProps)(LoginPage);

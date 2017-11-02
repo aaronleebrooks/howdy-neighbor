@@ -4,90 +4,22 @@ import QuestionPreview from './question-preview'
 import SearchBar from './search-bar'
 import AddQuestionForm from './add-question'
 
+import {connect} from 'react-redux';
+
+import * as actions from '../../actions/actions';
 
 import'../css/dashboard.css'
 
 export class Dashboard extends React.Component {
+
+    componentWillMount() {
+        this.props.questions()
+    }
+
 	render() {
-
-	const fakeQuestions = [{
-            question: 'How do you install a bidet?',
-            explain: 'I just got a bidet off Amazon. Can I hook this up, or do I need power tools?',
-            type: 'plumber',
-            user: 'Tom Jones',
-            timestamp: '12-25-2002',
-            answers: [{
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }]
-        }, {
-            question: 'How do you install a bidet?',
-            explain: 'I just got a bidet off Amazon. Can I hook this up, or do I need power tools?',
-            type: 'plumber',
-            user: 'Tom Jones',
-            timestamp: '12-25-2002',
-            answers: [{
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }]
-        }, {
-            question: 'How do you install a bidet?',
-            explain: 'I just got a bidet off Amazon. Can I hook this up, or do I need power tools?',
-            type: 'plumber',
-            user: 'Tom Jones',
-            timestamp: '12-25-2002',
-            answers: [{
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }]
-        }, {
-            question: 'How do you install a bidet?',
-            explain: 'I just got a bidet off Amazon. Can I hook this up, or do I need power tools?',
-            type: 'plumber',
-            user: 'Tom Jones',
-            timestamp: '12-25-2002',
-            answers: [{
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }, {
-                answer: 'Put it on the toilet',
-                user: 'Sam Kinison',
-                timestamp: '12-25-2003'
-            }]
-        }];
-
+    console.log(this.props)
+    const fakeQuestions = this.props.questions;
+    console.log({fakeQuestions})
         const questions = fakeQuestions.map((question, index) => 
            <QuestionPreview key={index} question={question}/>
         );
@@ -102,4 +34,21 @@ export class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+const mapStateToProps = (store) => {
+    return {
+        questions: store.fetchedQuestions
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        questions: () => {
+            dispatch(actions.fetchQuestions())
+        }
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Dashboard)

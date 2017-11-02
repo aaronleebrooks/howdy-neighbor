@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
 
 import '../css/info-column.css';
 
@@ -39,5 +39,9 @@ export function InfoColumn(props) {
         );
     }
 
+const mapStateToProps = state => ({
+    loggedIn: state.auth.currentUser !== null,
+    craftsman: false
+});
 
-export default InfoColumn;
+export default connect(mapStateToProps)(InfoColumn);

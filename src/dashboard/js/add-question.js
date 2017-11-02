@@ -1,7 +1,16 @@
 import React from 'react';
 import ReactModal from 'react-modal'
 
+import {Field, reduxForm, focus} from 'redux-form';
+import Input from '../../landing-and-login/js/input';
+import {postQuestion} from '../../actions/actions';
+
 export class AddQuestionForm extends React.Component {
+
+     onSubmit = function(values) {
+        return this.props.dispatch(postQuestion(values.question, values.explain));
+    }
+
       constructor (props) {
         super(props);
         this.state = {
@@ -22,19 +31,34 @@ export class AddQuestionForm extends React.Component {
 
       
       render () {
+
+        let error;
+        if (this.props.error) {
+            error = (
+                <div className="form-error">
+                    {this.props.error}
+                </div>
+            );
+        }
+
         return (
       <div>
-        <button onClick={this.handleOpenModal}>Ask a Question</button>
+        <button onClick={this.handleOpenModal}>Ask a Question
+        </button>
         <ReactModal
            isOpen={this.state.showModal}
            contentLabel="Modal #1 Global Style Override Example"
            onRequestClose={this.handleCloseModal}
         >
             <form
-                className="login-form"
-                >
+                className="add-question-form"
+                onSubmit={this.props.handleSubmit(values =>
+                    this.onSubmit(values)
+                )}>
+                {error}
                 <label htmlFor="question">Question
-                <input
+                <Field
+                    component={Input}
                     type="text"
                     name="question"
                     id="question"
@@ -42,13 +66,14 @@ export class AddQuestionForm extends React.Component {
                 />
                 </label>
                 <label htmlFor="explain">Explain it
-                <input
-                    type="explain"
+                <Field
+                    component={Input}
+                    type="text"
                     name="explain"
                     id="explain"
                 />
                 </label>
-                <button>
+                <button disabled={this.props.pristine || this.props.submitting}>
                     Submit
                 </button>
             </form>
@@ -59,4 +84,7 @@ export class AddQuestionForm extends React.Component {
     }
 };
 
-export default AddQuestionForm;
+export default reduxForm({
+    form: 'postQuestion',
+    onSubmitFail: (errors, dispatch) => dispatch(focus('question', 'explain'))
+})(AddQuestionForm);
